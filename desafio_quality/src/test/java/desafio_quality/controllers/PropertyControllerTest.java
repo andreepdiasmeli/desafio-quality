@@ -1,8 +1,10 @@
 package desafio_quality.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import desafio_quality.dtos.CreateDistrictDTO;
+import desafio_quality.dtos.DistrictDTO;
+import desafio_quality.dtos.PropertyDTO;
 import desafio_quality.dtos.PropertyValueDTO;
+import desafio_quality.dtos.RoomDTO;
 import desafio_quality.exceptions.ResourceNotFoundException;
 import desafio_quality.services.PropertyService;
 import org.junit.jupiter.api.DisplayName;
@@ -17,13 +19,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -71,4 +73,42 @@ class PropertyControllerTest {
         mock.perform(request)
                 .andExpect(status().isUnprocessableEntity());
     }
+
+    @Test
+    @DisplayName("Should return the List of all properties.")
+    void testGetAllProperties() throws Exception {
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get("/properties/")
+                .accept(MediaType.APPLICATION_JSON);
+        PropertyDTO property1 = this.createSomePropertyDTO("Yellow House", 2);
+        PropertyDTO property2 = this.createSomePropertyDTO("Green House", 1);
+
+        when(propertyService.getAllProperties()).thenReturn(List.of(property1, property2));
+
+        mock.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].name").value("Yellow House"))
+                .andExpect(jsonPath("$[0].rooms", hasSize(2)));
+    }
+
+    private PropertyDTO createSomePropertyDTO(String name, int numberRooms) {
+        DistrictDTO district = new DistrictDTO(1L,
+                "Downtown",
+                new BigDecimal("9540.50"));
+        return new PropertyDTO(1L,
+                name,
+                district,
+                this.createListOfRooms(numberRooms)
+                );
+    }
+
+    private List<RoomDTO> createListOfRooms(int number) {
+        List<RoomDTO> rooms = new ArrayList<>();
+        for (int i = 0; i < number; i++) {
+            rooms.add(new RoomDTO((long) i, "empty room", 1., 1.));
+        }
+        return rooms;
+    }
 }
+

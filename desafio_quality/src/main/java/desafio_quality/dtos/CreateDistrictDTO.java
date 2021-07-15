@@ -1,10 +1,6 @@
 package desafio_quality.dtos;
 
-import desafio_quality.dtos.validation.FirstValidation;
-import desafio_quality.dtos.validation.SecondValidation;
-import desafio_quality.dtos.validation.ValidationSequence;
 
-import javax.validation.GroupSequence;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
