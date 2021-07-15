@@ -1,5 +1,6 @@
 package desafio_quality.controllers;
 
+import desafio_quality.dtos.PropertyValueDTO;
 import desafio_quality.dtos.PropertyAreaDTO;
 import desafio_quality.services.PropertyService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +18,15 @@ public class PropertyController {
         this.propertyService = propertyService;
     }
 
+
+    @GetMapping("{id}/value")
+    public PropertyValueDTO getValue(@PathVariable Long id) {
+        return propertyService.getValue(id);
+    }
+
     @GetMapping("{id}/totalArea")
     public PropertyAreaDTO getTotalArea(@PathVariable Long id){
         return propertyService.getTotalArea(id);
+
     }
 }
