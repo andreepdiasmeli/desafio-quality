@@ -41,6 +41,7 @@ public class DistrictController {
     }
 
     @DeleteMapping("{districtId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteDistrict(@PathVariable Long districtId){
         this.districtService.deleteDistrict(districtId);
     }

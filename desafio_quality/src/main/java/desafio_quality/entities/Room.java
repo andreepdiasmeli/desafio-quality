@@ -17,10 +17,14 @@ public class Room {
     @JoinColumn
     private Property property;
 
-    public Room() {
-    }
+    
+    public Room() {}
 
-    public Room(String name, double width, double length, Property property) {
+    public Room(
+            String name, 
+            double width, 
+            double length, 
+            Property property) {
         this.name = name;
         this.width = width;
         this.length = length;
@@ -28,26 +32,38 @@ public class Room {
     }
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public String getName() {
-        return name;
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public double getWidth() {
-        return width;
+        return this.width;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
     }
 
     public double getLength() {
-        return length;
+        return this.length;
+    }
+
+    public void setLength(double length) {
+        this.length = length;
     }
 
     public Property getProperty() {
-        return property;
+        return this.property;
     }
 
     public double getArea(){
-        return length * width;
+        return this.length * this.width;
     }
 }

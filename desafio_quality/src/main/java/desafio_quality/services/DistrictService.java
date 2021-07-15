@@ -4,6 +4,8 @@ import desafio_quality.dtos.CreateDistrictDTO;
 import desafio_quality.dtos.DistrictDTO;
 import desafio_quality.entities.District;
 import desafio_quality.exceptions.ResourceNotFoundException;
+import desafio_quality.entities.District;
+import desafio_quality.exceptions.ResourceNotFoundException;
 import desafio_quality.repositories.DistrictRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,11 @@ public class DistrictService {
 
     public DistrictService(DistrictRepository districtRepository) {
         this.districtRepository = districtRepository;
+    }
+
+    public District findDiscrict(Long districtId) {
+        return this.districtRepository.findById(districtId).orElseThrow(() ->
+                new ResourceNotFoundException("District with ID " + districtId + " does not exist."));
     }
 
     public District findDistrictById(Long districtId){
