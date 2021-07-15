@@ -1,5 +1,6 @@
 package desafio_quality.controllers;
 
+import desafio_quality.dtos.PropertyRoomsAreaDTO;
 import desafio_quality.dtos.RoomDTO;
 import desafio_quality.entities.Room;
 import desafio_quality.services.PropertyService;
@@ -21,5 +22,10 @@ public class PropertyController {
     @GetMapping("{propertyId}/largestRoom")
     public RoomDTO getLargestRoom(@PathVariable(value = "propertyId") Long propertyId){
         return propertyService.getLargestRoom(propertyId);
+    }
+
+    @GetMapping("{propertyId}/roomsArea")
+    public PropertyRoomsAreaDTO getRoomsArea(@PathVariable(value = "propertyId") Long propertyId){
+        return propertyService.getRoomsArea(propertyId);
     }
 }
