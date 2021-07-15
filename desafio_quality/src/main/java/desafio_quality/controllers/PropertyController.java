@@ -1,8 +1,13 @@
 package desafio_quality.controllers;
 
+import desafio_quality.dtos.UpsertPropertyDTO;
+import desafio_quality.dtos.PropertyDTO;
+import desafio_quality.dtos.RoomDTO;
 import desafio_quality.services.PropertyService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("properties")
@@ -12,5 +17,35 @@ public class PropertyController {
 
     public PropertyController(PropertyService propertyService) {
         this.propertyService = propertyService;
+    }
+
+    @PostMapping("")
+    public PropertyDTO createProperty(@RequestBody @Valid UpsertPropertyDTO createProperty) {
+        return this.propertyService.createProperty(createProperty);
+    }
+
+    @GetMapping("{propertyId}")
+    public PropertyDTO getProperty(@PathVariable Long propertyId) {
+        return this.propertyService.getPropertyById(propertyId);
+    }
+
+    @GetMapping("")
+    public List<PropertyDTO> getAllProperties() {
+        return this.propertyService.getAllProperties();
+    }
+
+    @GetMapping("{propertyId}/rooms")
+    public List<RoomDTO> getPropertyRooms(@PathVariable Long propertyId) {
+        return this.propertyService.getPropertyRooms(propertyId);
+    }
+
+    @PutMapping("{propertyId}")
+    public PropertyDTO updateProperty(@PathVariable Long propertyId, @RequestBody @Valid UpsertPropertyDTO upsertPropertyDTO) {
+        return this.propertyService.updateProperty(propertyId, upsertPropertyDTO);
+    }
+
+    @DeleteMapping("{propertyId}")
+    public void deleteProperty(@PathVariable Long propertyId) {
+        this.propertyService.deleteProperty(propertyId);
     }
 }

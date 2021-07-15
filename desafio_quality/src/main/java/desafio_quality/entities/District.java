@@ -31,6 +31,10 @@ public class District {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public BigDecimal getSquareMeterValue() {
         return squareMeterValue;
     }

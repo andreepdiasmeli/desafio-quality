@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 public class RoomService {
 
     private final RoomRepository roomRepository;
+    private PropertyService propertyService;
 
-    public RoomService(RoomRepository roomRepository) {
+    public RoomService(RoomRepository roomRepository, PropertyService propertyService) {
         this.roomRepository = roomRepository;
+        this.propertyService = propertyService;
     }
 }
