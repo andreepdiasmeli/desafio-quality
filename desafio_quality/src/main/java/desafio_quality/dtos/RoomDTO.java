@@ -1,34 +1,26 @@
-package desafio_quality.entities;
+package desafio_quality.dtos;
 
-import javax.persistence.*;
+import desafio_quality.entities.Room;
 
-@Entity
-public class Room {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class RoomDTO {
+    
     private Long id;
-
     private String name;
     private double width;
     private double length;
 
-    @ManyToOne
-    @JoinColumn
-    private Property property;
 
-    
-    public Room() {}
+    public RoomDTO() {}
 
-    public Room(
+    public RoomDTO(
+            Long id,
             String name, 
             double width, 
-            double length, 
-            Property property) {
+            double length) {
+        this.id = id;
         this.name = name;
         this.width = width;
         this.length = length;
-        this.property = property;
     }
 
     public Long getId() {
@@ -59,11 +51,12 @@ public class Room {
         this.length = length;
     }
 
-    public Property getProperty() {
-        return this.property;
-    }
-
-    public double getArea(){
-        return this.length * this.width;
+    public static RoomDTO toDTO(Room room) {
+        return new RoomDTO(
+            room.getId(),
+            room.getName(),
+            room.getWidth(),
+            room.getLength()
+        );
     }
 }
