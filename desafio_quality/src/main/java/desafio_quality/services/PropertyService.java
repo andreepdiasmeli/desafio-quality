@@ -1,6 +1,7 @@
 package desafio_quality.services;
 
 import desafio_quality.dtos.PropertyValueDTO;
+import desafio_quality.dtos.PropertyAreaDTO;
 import desafio_quality.entities.Property;
 import desafio_quality.exceptions.ResourceNotFoundException;
 import desafio_quality.repositories.PropertyRepository;
@@ -15,14 +16,20 @@ public class PropertyService {
         this.propertyRepository = propertyRepository;
     }
 
+    private Property findById(Long propertyId) {
+        return propertyRepository.findById(propertyId).orElseThrow(() ->
+                new ResourceNotFoundException("Property with " + propertyId + " was not found.")
+        );
+    }
+
     public PropertyValueDTO getValue(Long propertyId) {
         Property property = findById(propertyId);
         return PropertyValueDTO.toDTO(property);
     }
 
-    private Property findById(Long propertyId) {
-        return propertyRepository.findById(propertyId).orElseThrow(() ->
-            new ResourceNotFoundException("Property with " + propertyId + " was not found.")
-        );
+    public PropertyAreaDTO getTotalArea(Long propertyId) {
+        Property property = findById(propertyId);
+        return PropertyAreaDTO.toDTO(property);
     }
+
 }
