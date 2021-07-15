@@ -7,9 +7,6 @@ import desafio_quality.entities.Room;
 import desafio_quality.exceptions.ResourceNotFoundException;
 import desafio_quality.repositories.RoomRepository;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
@@ -22,10 +19,7 @@ public class RoomService {
     private final PropertyService propertyService;
     private static final Integer defaultPageSize = 5;
 
-
-    public RoomService(
-            RoomRepository roomRepository,
-            PropertyService propertyService) {
+    public RoomService(RoomRepository roomRepository, PropertyService propertyService) {
         this.roomRepository = roomRepository;
         this.propertyService = propertyService;
     }
@@ -36,7 +30,7 @@ public class RoomService {
 
         Pageable paging = PageRequest.of(pageNumber, pageSize);
         Page<Room> paginatedProducts = this.roomRepository.findAll(paging);
-        
+
         return paginatedProducts.map(RoomDTO::toDTO);
     }
 
@@ -52,7 +46,7 @@ public class RoomService {
     }
 
     public RoomDTO createRoom(
-            Long propertyId, 
+            Long propertyId,
             UpsertRoomDTO upsertRoomDto) throws ResourceNotFoundException {
         Property property = this.propertyService.findPropertyById(propertyId);
 
@@ -68,14 +62,14 @@ public class RoomService {
     }
 
     public RoomDTO updateRoom(
-            Long roomId, 
+            Long roomId,
             UpsertRoomDTO upsertRoomDto) throws ResourceNotFoundException {
         Room room = findById(roomId);
 
         room.setName(upsertRoomDto.getName());
         room.setLength(upsertRoomDto.getLength());
         room.setWidth(upsertRoomDto.getWidth());
-        
+
         Room updatedRoom = this.roomRepository.save(room);
         return RoomDTO.toDTO(updatedRoom);
     }
