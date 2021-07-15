@@ -14,8 +14,8 @@ public class RoomDTO {
 
     public RoomDTO(
             Long id,
-            String name, 
-            double width, 
+            String name,
+            double width,
             double length) {
         this.id = id;
         this.name = name;
