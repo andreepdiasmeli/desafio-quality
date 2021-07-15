@@ -1,10 +1,12 @@
 package desafio_quality.services;
 
-import desafio_quality.dtos.RoomDTO;
+import desafio_quality.dtos.PropertyValueDTO;
+import desafio_quality.dtos.PropertyAreaDTO;
 import desafio_quality.entities.Property;
+import desafio_quality.exceptions.ResourceNotFoundException;
+import desafio_quality.dtos.RoomDTO;
 import desafio_quality.entities.Room;
 import desafio_quality.exceptions.PropertyHasNoRoomsException;
-import desafio_quality.exceptions.ResourceNotFoundException;
 import desafio_quality.repositories.PropertyRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +21,25 @@ public class PropertyService {
         this.propertyRepository = propertyRepository;
     }
 
-    public Property findPropertyById(Long propertyId)  {
-        return this.propertyRepository.findById(propertyId).orElseThrow(() ->
-                new ResourceNotFoundException("Property with id " + propertyId + " was not found."));
+    private Property findById(Long propertyId) {
+        return propertyRepository.findById(propertyId).orElseThrow(() ->
+                new ResourceNotFoundException("Property with " + propertyId + " was not found.")
+        );
     }
 
+    public PropertyValueDTO getValue(Long propertyId) {
+        Property property = findById(propertyId);
+        return PropertyValueDTO.toDTO(property);
+    }
+
+    public PropertyAreaDTO getTotalArea(Long propertyId) {
+        Property property = findById(propertyId);
+        return PropertyAreaDTO.toDTO(property);
+    }
+
+
     public RoomDTO getLargestRoom(Long propertyId) {
-        Property property = findPropertyById(propertyId);
+        Property property = findById(propertyId);
 
         Room largestRoom =  property.getRooms().stream()
                 .max(Comparator.comparing(Room::getArea))
