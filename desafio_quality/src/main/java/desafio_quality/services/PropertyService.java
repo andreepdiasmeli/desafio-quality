@@ -4,8 +4,13 @@ import desafio_quality.dtos.PropertyValueDTO;
 import desafio_quality.dtos.PropertyAreaDTO;
 import desafio_quality.entities.Property;
 import desafio_quality.exceptions.ResourceNotFoundException;
+import desafio_quality.dtos.RoomDTO;
+import desafio_quality.entities.Room;
+import desafio_quality.exceptions.PropertyHasNoRoomsException;
 import desafio_quality.repositories.PropertyRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.Comparator;
 
 @Service
 public class PropertyService {
@@ -32,4 +37,14 @@ public class PropertyService {
         return PropertyAreaDTO.toDTO(property);
     }
 
+
+    public RoomDTO getLargestRoom(Long propertyId) {
+        Property property = findById(propertyId);
+
+        Room largestRoom =  property.getRooms().stream()
+                .max(Comparator.comparing(Room::getArea))
+                .orElseThrow(() -> new PropertyHasNoRoomsException(propertyId));
+
+        return RoomDTO.toDTO(largestRoom);
+    }
 }
