@@ -1,7 +1,6 @@
 package desafio_quality.entities;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,5 +50,13 @@ public class Property {
 
     public void setRooms(List<Room> rooms) {
         this.rooms = rooms;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDistrict(District district) {
+        this.district = district;
     }
 }
