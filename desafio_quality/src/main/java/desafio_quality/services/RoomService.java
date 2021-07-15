@@ -10,6 +10,9 @@ import desafio_quality.repositories.RoomRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,8 +20,9 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
     private final PropertyService propertyService;
+    private static final Integer defaultPageSize = 5;
 
-    
+
     public RoomService(
             RoomRepository roomRepository,
             PropertyService propertyService) {
@@ -26,9 +30,14 @@ public class RoomService {
         this.propertyService = propertyService;
     }
 
-    public List<RoomDTO> getAllRooms() {
-        List<Room> rooms = this.roomRepository.findAll();
-        return rooms.stream().map(RoomDTO::toDTO).collect(Collectors.toList());
+    public Page<RoomDTO> getAllRooms(Integer pageNumber, Integer pageSize) {
+        pageNumber = pageNumber != null ? pageNumber : 0;
+        pageSize = pageSize != null ? pageSize : defaultPageSize;
+
+        Pageable paging = PageRequest.of(pageNumber, pageSize);
+        Page<Room> paginatedProducts = this.roomRepository.findAll(paging);
+        
+        return paginatedProducts.map(RoomDTO::toDTO);
     }
 
     public Room findById(Long roomId) throws ResourceNotFoundException {
