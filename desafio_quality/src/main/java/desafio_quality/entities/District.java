@@ -13,7 +13,6 @@ public class District {
     private Long id;
 
     private String name;
-
     private BigDecimal squareMeterValue;
 
     @OneToMany(mappedBy = "district")
@@ -41,6 +40,14 @@ public class District {
 
     public List<Property> getProperties() {
         return properties;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSquareMeterValue(BigDecimal squareMeterValue) {
+        this.squareMeterValue = squareMeterValue;
     }
 
     public void setProperties(List<Property> properties) {

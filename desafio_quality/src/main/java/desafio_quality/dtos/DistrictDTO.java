@@ -5,20 +5,17 @@ import desafio_quality.entities.District;
 import java.math.BigDecimal;
 
 public class DistrictDTO {
+
     private Long id;
     private String name;
     private BigDecimal squareMeterValue;
 
-    public DistrictDTO() {}
+    public DistrictDTO(){}
 
     public DistrictDTO(Long id, String name, BigDecimal squareMeterValue) {
         this.id = id;
         this.name = name;
         this.squareMeterValue = squareMeterValue;
-    }
-
-    public static DistrictDTO toDTO(District district) {
-        return new DistrictDTO(district.getId(), district.getName(), district.getSquareMeterValue());
     }
 
     public Long getId() {
@@ -31,5 +28,13 @@ public class DistrictDTO {
 
     public BigDecimal getSquareMeterValue() {
         return squareMeterValue;
+    }
+
+    public static DistrictDTO toDTO(District district){
+        return new DistrictDTO(
+                district.getId(),
+                district.getName(),
+                district.getSquareMeterValue()
+                );
     }
 }
