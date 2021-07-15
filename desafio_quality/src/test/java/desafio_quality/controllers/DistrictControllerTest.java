@@ -1,9 +1,7 @@
 package desafio_quality.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import desafio_quality.dtos.CreateDistrictDTO;
-import desafio_quality.dtos.DistrictDTO;
-import desafio_quality.dtos.PropertyValueDTO;
+import desafio_quality.dtos.*;
 import desafio_quality.services.DistrictService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +17,10 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -78,5 +79,35 @@ class DistrictControllerTest {
                 .andExpect(jsonPath("$.name").value("O nome do bairro deve começar com uma letra maiúscula."))
                 .andExpect(jsonPath("$.squareMeterValue").value("O valor de metros quadrados não deve exceder 13 digitos."));
     }
+
+    @Test
+    @DisplayName("Should update a district.")
+    void testUpdateOfDistrict() throws Exception {
+
+        Long districtId = 1L;
+
+        CreateDistrictDTO createDistrictDTO = new CreateDistrictDTO("District", new BigDecimal(2000));
+        String districtJSON = mapper.writeValueAsString(createDistrictDTO);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .put("/districts/"+ districtId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(districtJSON);
+
+        DistrictDTO districtDTO = new DistrictDTO(
+                districtId,
+                createDistrictDTO.getName(),
+                createDistrictDTO.getSquareMeterValue());
+
+        when(districtService.updateDistrict(any(Long.class), any(CreateDistrictDTO.class))).thenReturn(districtDTO);
+
+        mock.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(districtId))
+                .andExpect(jsonPath("$.name").value(createDistrictDTO.getName()))
+                .andExpect(jsonPath("$.squareMeterValue").value(createDistrictDTO.getSquareMeterValue()));
+    }
+
 
 }
