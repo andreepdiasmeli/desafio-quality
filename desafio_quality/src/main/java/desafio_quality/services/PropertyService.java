@@ -1,5 +1,7 @@
 package desafio_quality.services;
 
+import desafio_quality.dtos.PropertyRoomsAreaDTO;
+import desafio_quality.dtos.RoomDTO;
 import desafio_quality.dtos.*;
 import desafio_quality.entities.District;
 import desafio_quality.entities.Property;
@@ -92,5 +94,11 @@ public class PropertyService {
             .orElseThrow(() -> new PropertyHasNoRoomsException(propertyId));
 
         return RoomDTO.toDTO(largestRoom);
+    }
+
+    public PropertyRoomsAreaDTO getRoomsArea(Long propertyId) {
+        Property property = findPropertyById(propertyId);
+
+        return PropertyRoomsAreaDTO.toDTO(property);
     }
 }

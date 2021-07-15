@@ -1,5 +1,7 @@
 package desafio_quality.controllers;
 
+import desafio_quality.dtos.PropertyRoomsAreaDTO;
+import desafio_quality.dtos.RoomDTO;
 import desafio_quality.dtos.*;
 import desafio_quality.services.PropertyService;
 import org.springframework.http.HttpStatus;
@@ -65,5 +67,10 @@ public class PropertyController {
     @GetMapping("{propertyId}/largestRoom")
     public RoomDTO getLargestRoom(@PathVariable(value = "propertyId") Long propertyId){
         return propertyService.getLargestRoom(propertyId);
+    }
+
+    @GetMapping("{propertyId}/roomsArea")
+    public PropertyRoomsAreaDTO getRoomsArea(@PathVariable(value = "propertyId") Long propertyId){
+        return propertyService.getRoomsArea(propertyId);
     }
 }
