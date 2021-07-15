@@ -46,6 +46,7 @@ public class RoomController {
     }
 
     @Operation(summary = "Create a room")
+    @Parameter(name = "propertyId", required = true, description = "The property ID", example = "1")
     @PostMapping("property/{propertyId}")
     @ResponseStatus(HttpStatus.CREATED)
     public RoomDTO createRoom(
@@ -55,6 +56,7 @@ public class RoomController {
     }
 
     @Operation(summary = "Update an existing room")
+    @Parameter(name = "roomId", required = true, description = "The room ID", example = "1")
     @PutMapping("{roomId}")
     public RoomDTO updateRoom(
             @PathVariable Long roomId,
@@ -63,6 +65,7 @@ public class RoomController {
     }
 
     @Operation(summary = "Delete an existing room")
+    @Parameter(name = "roomId", required = true, description = "The room ID", example = "1")
     @DeleteMapping("{roomId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteRoom(@PathVariable Long roomId){
