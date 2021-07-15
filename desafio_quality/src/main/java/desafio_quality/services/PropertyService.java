@@ -60,8 +60,8 @@ public class PropertyService {
 
     public PropertyDTO updateProperty(Long propertyId, UpsertPropertyDTO updateProperty) {
         Property property = this.findPropertyById(propertyId);
-        property.setName(updateProperty.getName());
         District district = this.districtService.findDiscrict(updateProperty.getDistrictId());
+        property.setName(updateProperty.getName());
         property.setDistrict(district);
         property = this.propertyRepository.save(property);
         return PropertyDTO.toDTO(property);

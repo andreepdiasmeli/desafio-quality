@@ -4,6 +4,7 @@ import desafio_quality.dtos.UpsertPropertyDTO;
 import desafio_quality.dtos.PropertyDTO;
 import desafio_quality.dtos.RoomDTO;
 import desafio_quality.services.PropertyService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,6 +21,7 @@ public class PropertyController {
     }
 
     @PostMapping("")
+    @ResponseStatus(HttpStatus.CREATED)
     public PropertyDTO createProperty(@RequestBody @Valid UpsertPropertyDTO createProperty) {
         return this.propertyService.createProperty(createProperty);
     }
@@ -45,6 +47,7 @@ public class PropertyController {
     }
 
     @DeleteMapping("{propertyId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProperty(@PathVariable Long propertyId) {
         this.propertyService.deleteProperty(propertyId);
     }

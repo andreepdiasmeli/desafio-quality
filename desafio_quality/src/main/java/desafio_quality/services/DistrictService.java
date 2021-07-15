@@ -16,6 +16,6 @@ public class DistrictService {
 
     public District findDiscrict(Long districtId) {
         return this.districtRepository.findById(districtId).orElseThrow(() ->
-                new ResourceNotFoundException("Resource with ID " + districtId + " does not exist."));
+                new ResourceNotFoundException("District with ID " + districtId + " does not exist."));
     }
 }
