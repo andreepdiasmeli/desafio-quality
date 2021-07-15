@@ -18,10 +18,6 @@ public class RoomDTO {
         this.length = length;
     }
 
-    public static RoomDTO toDTO(Room room) {
-        return new RoomDTO(room.getId(), room.getName(), room.getWidth(), room.getLength());
-    }
-
     public Long getId() {
         return id;
     }
@@ -36,5 +32,27 @@ public class RoomDTO {
 
     public Double getLength() {
         return length;
+    }
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
+    public void setLength(double length) {
+        this.length = length;
+    }
+
+    public static RoomDTO toDTO(Room room) {
+        return new RoomDTO(
+            room.getId(),
+            room.getName(),
+            room.getWidth(),
+            room.getLength()
+        );
     }
 }

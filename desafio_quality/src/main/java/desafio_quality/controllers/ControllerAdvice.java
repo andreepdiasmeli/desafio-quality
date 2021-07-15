@@ -1,6 +1,7 @@
 package desafio_quality.controllers;
 
 import desafio_quality.dtos.ExceptionDTO;
+import desafio_quality.exceptions.PropertyHasNoRoomsException;
 import desafio_quality.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +17,9 @@ import java.util.Map;
 @RestControllerAdvice
 public class ControllerAdvice {
 
-    @ExceptionHandler({ ResourceNotFoundException.class })
+    @ExceptionHandler({ ResourceNotFoundException.class, PropertyHasNoRoomsException.class})
     public ResponseEntity<ExceptionDTO> handleResourceExceptions(RuntimeException ex){
-        return new ResponseEntity<ExceptionDTO>(new ExceptionDTO(ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity<>(new ExceptionDTO(ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

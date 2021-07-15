@@ -1,8 +1,6 @@
 package desafio_quality.controllers;
 
-import desafio_quality.dtos.UpsertPropertyDTO;
-import desafio_quality.dtos.PropertyDTO;
-import desafio_quality.dtos.RoomDTO;
+import desafio_quality.dtos.*;
 import desafio_quality.services.PropertyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -50,5 +48,22 @@ public class PropertyController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProperty(@PathVariable Long propertyId) {
         this.propertyService.deleteProperty(propertyId);
+    }
+
+
+    @GetMapping("{id}/value")
+    public PropertyValueDTO getValue(@PathVariable Long id) {
+        return propertyService.getValue(id);
+    }
+
+    @GetMapping("{id}/totalArea")
+    public PropertyAreaDTO getTotalArea(@PathVariable Long id){
+        return propertyService.getTotalArea(id);
+
+    }
+
+    @GetMapping("{propertyId}/largestRoom")
+    public RoomDTO getLargestRoom(@PathVariable(value = "propertyId") Long propertyId){
+        return propertyService.getLargestRoom(propertyId);
     }
 }
