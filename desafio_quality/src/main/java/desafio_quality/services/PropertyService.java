@@ -1,5 +1,8 @@
 package desafio_quality.services;
 
+import desafio_quality.dtos.PropertyValueDTO;
+import desafio_quality.entities.Property;
+import desafio_quality.exceptions.ResourceNotFoundException;
 import desafio_quality.repositories.PropertyRepository;
 import org.springframework.stereotype.Service;
 
@@ -10,5 +13,16 @@ public class PropertyService {
 
     public PropertyService(PropertyRepository propertyRepository) {
         this.propertyRepository = propertyRepository;
+    }
+
+    public PropertyValueDTO getValue(Long propertyId) {
+        Property property = findById(propertyId);
+        return PropertyValueDTO.toDTO(property);
+    }
+
+    private Property findById(Long propertyId) {
+        return propertyRepository.findById(propertyId).orElseThrow(() ->
+            new ResourceNotFoundException("Property with " + propertyId + " was not found.")
+        );
     }
 }
