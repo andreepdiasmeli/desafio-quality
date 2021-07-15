@@ -2,8 +2,10 @@ package desafio_quality.controllers;
 
 import desafio_quality.dtos.CreateDistrictDTO;
 import desafio_quality.dtos.DistrictDTO;
+import desafio_quality.dtos.validation.ValidationSequence;
 import desafio_quality.services.DistrictService;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
