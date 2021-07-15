@@ -1,6 +1,10 @@
 package desafio_quality.controllers;
 
+import desafio_quality.dtos.RoomDTO;
+import desafio_quality.entities.Room;
 import desafio_quality.services.PropertyService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,5 +16,10 @@ public class PropertyController {
 
     public PropertyController(PropertyService propertyService) {
         this.propertyService = propertyService;
+    }
+
+    @GetMapping("{propertyId}/largestRoom")
+    public RoomDTO getLargestRoom(@PathVariable(value = "propertyId") Long propertyId){
+        return propertyService.getLargestRoom(propertyId);
     }
 }
