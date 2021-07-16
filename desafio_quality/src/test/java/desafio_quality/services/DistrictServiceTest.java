@@ -3,6 +3,8 @@ package desafio_quality.services;
 import desafio_quality.dtos.CreateDistrictDTO;
 import desafio_quality.dtos.DistrictDTO;
 import desafio_quality.entities.District;
+import desafio_quality.entities.Property;
+import desafio_quality.exceptions.ResourceNotFoundException;
 import desafio_quality.repositories.DistrictRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -63,6 +66,34 @@ class DistrictServiceTest {
 
         DistrictDTO expectedDTO = new DistrictDTO(district.getId(), district.getName(), district.getSquareMeterValue());
         assertThat(districtDTO).usingRecursiveComparison().ignoringFields("id").isEqualTo(expectedDTO);
+    }
+
+    @Test
+    @DisplayName("Should return a district when finding a with a valid id.")
+    void testFindDistrictByIdWithAValidId(){
+        Long districtId = 1L;
+
+        District mockDistrict = new District("Costa e Silva", new BigDecimal("3000"));
+        when(districtRepository.findById(any(Long.class))).thenReturn(Optional.of(mockDistrict));
+
+        District district = districtService.findDistrictById(districtId);
+
+        District expectedDistrict = new District(mockDistrict.getName(), mockDistrict.getSquareMeterValue());
+        assertThat(expectedDistrict).usingRecursiveComparison().isEqualTo(district);
+    }
+
+    @Test
+    @DisplayName("Should throw exception when finding a district with invalid id.")
+    void testFindDistrictyByIdWithAnInvalidId(){
+        Long districtId = 1L;
+
+        when(districtRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+
+        Exception ex = assertThrows(ResourceNotFoundException.class, () -> {
+            districtService.findDistrictById(districtId);
+        });
+
+        assertEquals("District " + districtId + " does not exist.", ex.getMessage());
     }
 
 }

@@ -67,4 +67,34 @@ public class PropertyServiceTest {
             propertyService.getValue(propertyId);
         });
     }
+
+    @Test
+    @DisplayName("Should return a property when finding with a valid id.")
+    void testFindPropertyByIdWithAValidId(){
+        Long propertyId = 1L;
+
+        District mockDistrict = new District("Costa e Silva", new BigDecimal("3000"));
+        Property mockProperty = new Property("Casinha", mockDistrict);
+        when(propertyRepository.findById(any(Long.class))).thenReturn(Optional.of(mockProperty));
+
+        Property property = propertyService.findPropertyById(propertyId);
+
+        District expectedDistrict = new District(mockDistrict.getName(), mockDistrict.getSquareMeterValue());
+        Property expectedProperty = new Property(mockProperty.getName(), expectedDistrict);
+        assertThat(expectedProperty).usingRecursiveComparison().isEqualTo(property);
+    }
+
+    @Test
+    @DisplayName("Should throw exception when finding a property with invalid id.")
+    void testFindPropertyByIdWithAnInvalidId(){
+        Long propertyId = 1L;
+
+        when(propertyRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+
+        Exception ex = assertThrows(ResourceNotFoundException.class, () -> {
+            propertyService.findPropertyById(propertyId);
+        });
+
+        assertEquals("Property with ID " + propertyId + " does not exist.", ex.getMessage());
+    }
 }
