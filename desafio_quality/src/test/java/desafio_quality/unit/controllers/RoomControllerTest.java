@@ -23,13 +23,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.math.BigDecimal;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -243,7 +236,7 @@ class RoomControllerTest {
 
         mock.perform(request)
             .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.name").value("O nome do cômodo deve começar com uma letra maiúscula."))
+            .andExpect(jsonPath("$.name").value("O campo nome da sala não pode estar em branco."))
             .andExpect(jsonPath("$.width").value("A largura mínima permitida por cômodo é de 1 metro."))
             .andExpect(jsonPath("$.length").value("O comprimento máximo permitido por cômodo é de 33 metros."));
     }
