@@ -41,7 +41,6 @@ public class DistrictService {
     }
 
     public DistrictDTO createDistrict(CreateDistrictDTO createDistrict){
-
         District district = new District(createDistrict.getName(), createDistrict.getSquareMeterValue());
 
         district = this.districtRepository.save(district);
