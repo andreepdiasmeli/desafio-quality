@@ -1,7 +1,7 @@
 package desafio_quality.controllers;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.Matchers.hasSize;
@@ -72,19 +72,47 @@ public class RoomControllerTest {
 
     @Test
     @DisplayName("Should return Unprocessable Entity when updating a room with a non existent ID.")
-    void testFailureUpdateOfASpecificRoom() throws Exception {
+    void testFailureCreationOfADistrict() throws Exception {
         Long roomId = 2L;
-
+        
         UpsertRoomDTO upsertRoomDto = new UpsertRoomDTO("Quarto", 5.0, 3.0);
         String roomUpdateJson = mapper.writeValueAsString(upsertRoomDto);
-
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+
             .put("/rooms/" + roomId)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
             .content(roomUpdateJson);
 
         when(roomService.updateRoom(any(Long.class), any(UpsertRoomDTO.class))).thenThrow(ResourceNotFoundException.class);
+
+        mock.perform(request)
+            .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @DisplayName("Should delete a room from a valid id.")
+    void testDeleteARoom() throws Exception {
+        Long roomId = 1L;
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+            .delete("/rooms/" + roomId)
+            .accept(MediaType.APPLICATION_JSON);
+
+        doNothing().when(roomService).deleteRoom(any(Long.class));
+
+        mock.perform(request)
+            .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("Should not delete a room from an invalid id.")
+    void testDeleteAnInvalidRoom() throws Exception {
+        Long roomId = 10L;
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .delete("/rooms/" + roomId)
+                .accept(MediaType.APPLICATION_JSON);
+
+        doThrow(ResourceNotFoundException.class).when(roomService).deleteRoom(any(Long.class));
 
         mock.perform(request)
             .andExpect(status().isUnprocessableEntity());

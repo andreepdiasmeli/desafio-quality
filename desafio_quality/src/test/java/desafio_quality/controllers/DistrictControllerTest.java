@@ -3,6 +3,7 @@ package desafio_quality.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import desafio_quality.dtos.CreateDistrictDTO;
 import desafio_quality.dtos.DistrictDTO;
+
 import desafio_quality.exceptions.ResourceNotFoundException;
 import desafio_quality.services.DistrictService;
 import org.junit.jupiter.api.DisplayName;
@@ -21,9 +22,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.math.BigDecimal;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+
+import static org.mockito.Mockito.*;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,8 +43,8 @@ class DistrictControllerTest {
     private DistrictService districtService;
 
     @Test
-    @DisplayName("Should return the value of a property from a valid id.")
-    void testCreationOfADistrict() throws Exception {
+    @DisplayName("Should return the value of a district from a valid id.")
+    void testPostADistrict() throws Exception {
         CreateDistrictDTO district = new CreateDistrictDTO("Costa e Silva", new BigDecimal("1000"));
         String districtJSON = mapper.writeValueAsString(district);
 
@@ -64,7 +65,7 @@ class DistrictControllerTest {
 
     @Test
     @DisplayName("Should not create a district with incorrect data.")
-    void testFailureCreationOfADistrict() throws Exception {
+    void testPostAnInvalidDistrict() throws Exception {
         CreateDistrictDTO district = new CreateDistrictDTO("", new BigDecimal("123456789123456789"));
         String districtJSON = mapper.writeValueAsString(district);
 
@@ -145,5 +146,38 @@ class DistrictControllerTest {
         mock.perform(request)
             .andExpect(status().isUnprocessableEntity());
     }
+
+    @Test
+    @DisplayName("Should return a district from a valid id.")
+    void testGetADistrict() throws Exception {
+        Long propertyId = 1L;
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get("/districts/" + propertyId)
+                .accept(MediaType.APPLICATION_JSON);
+
+        DistrictDTO districtDTO = new DistrictDTO(1L, "Costa e Silva", new BigDecimal("200000.0"));
+        when(districtService.getDistrictById(any(Long.class))).thenReturn(districtDTO);
+
+        mock.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value("1"))
+                .andExpect(jsonPath("$.name").value("Costa e Silva"))
+                .andExpect(jsonPath("$.squareMeterValue").value("200000.0"));
+    }
+
+    @Test
+    @DisplayName("Should return UnprocessableEntity when getting a district from an invalid id.")
+    void testGetAnInvalidDistrict() throws Exception {
+        Long propertyId = 10L;
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get("/districts/" + propertyId)
+                .accept(MediaType.APPLICATION_JSON);
+
+        when(districtService.getDistrictById(any(Long.class))).thenThrow(ResourceNotFoundException.class);
+
+        mock.perform(request)
+                .andExpect(status().isUnprocessableEntity());
+    }
+
 
 }
