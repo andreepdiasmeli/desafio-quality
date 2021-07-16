@@ -136,7 +136,7 @@ public class DistrictServiceTest {
 
     @Test
     @DisplayName("Should throw exception when finding a district with invalid id.")
-    void testFindDistrictyByIdWithAnInvalidId(){
+    void testFindDistrictByIdWithAnInvalidId(){
         Long districtId = 1L;
 
         when(districtRepository.findById(any(Long.class))).thenReturn(Optional.empty());

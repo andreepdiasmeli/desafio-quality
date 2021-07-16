@@ -19,10 +19,13 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -32,11 +35,39 @@ public class RoomServiceTest {
     private RoomService roomService;
 
     @MockBean
-    private PropertyService propertyService;
-
-    @MockBean
     private RoomRepository roomRepository;
 
+    @MockBean
+    private PropertyService propertyService;
+
+    @Test
+    @DisplayName("Should return a dto of room.")
+    void testGetRoomWithValidId(){
+        Long roomId = 1L;
+
+        District district = new District("Bom Retiro", new BigDecimal("2000"));
+        Property property = new Property("Minha casa", district);
+        Room room = new Room("Quarto 1", 3.0,5.0, property);
+
+        when(roomRepository.findById(any(Long.class))).thenReturn(Optional.of(room));
+
+        RoomDTO roomDTO = roomService.getRoomById(roomId);
+
+        RoomDTO expected = new RoomDTO(roomId, room.getName(), room.getWidth(), room.getLength());
+        assertThat(roomDTO).usingRecursiveComparison().ignoringFields("id").isEqualTo(expected);
+    }
+
+
+    @Test
+    @DisplayName("Should return exception when getting a value.")
+    void testGetRoomWithInvalidId(){
+        Long roomId = 1L;
+        when(roomRepository.findById(any(Long.class))).thenThrow(ResourceNotFoundException.class);
+
+        assertThrows(ResourceNotFoundException.class, () -> {
+            roomService.getRoomById(roomId);
+        });
+    }
     @Test
     @DisplayName("Should return a dto of a created room.")
     void testCreateRoom() {
@@ -97,17 +128,14 @@ public class RoomServiceTest {
 
         District district = new District("Bom Retiro", new BigDecimal("2000"));
         Property property = new Property("Minha casa", district);
-        Room room = new Room("Quarto", 2.0, 3.0, property);
+        Room room = new Room("Quarto 1", 3.0,5.0, property);
 
         when(roomRepository.findById(any(Long.class))).thenReturn(Optional.of(room));
-        when(roomRepository.save(any(Room.class))).thenReturn(room);
 
-        UpsertRoomDTO upsertRoomDTO = new UpsertRoomDTO(room.getName(), room.getWidth(), room.getLength());
+        RoomDTO roomDTO = roomService.getRoomById(roomId);
 
-        RoomDTO actualRoom = roomService.updateRoom(roomId, upsertRoomDTO);
-        RoomDTO expectedRoom = new RoomDTO(roomId, room.getName(), room.getWidth(), room.getLength());
-
-        assertThat(actualRoom).usingRecursiveComparison().ignoringFields("id").isEqualTo(expectedRoom);
+        RoomDTO expected = new RoomDTO(roomId, room.getName(), room.getWidth(), room.getLength());
+        assertThat(roomDTO).usingRecursiveComparison().ignoringFields("id").isEqualTo(expected);
     }
 
     @Test
