@@ -5,30 +5,16 @@ import javax.validation.ConstraintValidatorContext;
 import java.util.Objects;
 
 public class NameValidator implements ConstraintValidator<Named, String> {
-    String fieldName;
-
     @Override
     public void initialize(Named constraintAnnotation) {
-        if (constraintAnnotation.fieldName().equals("None")) {
-            fieldName = "";
-        } else {
-            fieldName = constraintAnnotation.fieldName();
-        }
     }
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if(Objects.isNull(value)) {
+        if(Objects.isNull(value) || value.isBlank()) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
-                    "O campo " + this.fieldName + " não pode ser vazio.")
-                    .addConstraintViolation();
-            return false;
-        }
-        if(value.isBlank()) {
-            context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(
-                    "O campo " + this.fieldName + " não pode estar em branco.")
+                    "O nome da propriedade não pode estar vazio.")
                     .addConstraintViolation();
             return false;
         }
@@ -36,7 +22,7 @@ public class NameValidator implements ConstraintValidator<Named, String> {
         if(!Character.isLetter(first) || Character.isLowerCase(first)) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
-                    "O campo " + this.fieldName + " deve começar com uma letra maiúscula.")
+                    "O nome da propriedade deve começar com uma letra maiúscula.")
                     .addConstraintViolation();
             return false;
         }

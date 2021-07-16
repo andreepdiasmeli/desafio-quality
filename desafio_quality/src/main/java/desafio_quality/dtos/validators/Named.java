@@ -17,5 +17,4 @@ public @interface Named {
     String message() default "";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
-    String fieldName() default "None";
 }

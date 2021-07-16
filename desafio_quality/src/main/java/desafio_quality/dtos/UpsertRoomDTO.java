@@ -5,10 +5,12 @@ import desafio_quality.dtos.validators.Named;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class UpsertRoomDTO {
 
-    @Named(fieldName = "nome da sala")
+    @Named
+    @Size(max=30, message = "O comprimento do nome não pode exceder 30 caracteres.")
     private String name;
 
     @NotNull(message = "A largura do cômodo não pode estar vazia.")
