@@ -54,7 +54,7 @@ public class PropertyService {
 
 
     public PropertyDTO createProperty(UpsertPropertyDTO createProperty) {
-        District district = this.districtService.findDiscrict(createProperty.getDistrictId());
+        District district = this.districtService.findDistrictById(createProperty.getDistrictId());
         Property property = new Property(createProperty.getName(), district);
         property = this.propertyRepository.save(property);
         return PropertyDTO.toDTO(property);
@@ -62,7 +62,7 @@ public class PropertyService {
 
     public PropertyDTO updateProperty(Long propertyId, UpsertPropertyDTO updateProperty) {
         Property property = this.findPropertyById(propertyId);
-        District district = this.districtService.findDiscrict(updateProperty.getDistrictId());
+        District district = this.districtService.findDistrictById(updateProperty.getDistrictId());
         property.setName(updateProperty.getName());
         property.setDistrict(district);
         property = this.propertyRepository.save(property);
