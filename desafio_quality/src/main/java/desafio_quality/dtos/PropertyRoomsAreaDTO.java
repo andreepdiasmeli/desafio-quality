@@ -1,8 +1,6 @@
 package desafio_quality.dtos;
 
-import desafio_quality.entities.District;
 import desafio_quality.entities.Property;
-import desafio_quality.entities.Room;
 
 import java.util.List;
 import java.util.stream.Collectors;
