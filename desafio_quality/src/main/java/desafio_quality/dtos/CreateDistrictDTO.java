@@ -1,7 +1,5 @@
 package desafio_quality.dtos;
 
-
-import javax.validation.GroupSequence;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
