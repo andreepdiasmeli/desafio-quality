@@ -5,6 +5,7 @@ import desafio_quality.dtos.DistrictDTO;
 import desafio_quality.dtos.PropertyDTO;
 import desafio_quality.dtos.PropertyValueDTO;
 import desafio_quality.dtos.RoomDTO;
+import desafio_quality.exceptions.PropertyHasNoRoomsException;
 import desafio_quality.exceptions.ResourceNotFoundException;
 import desafio_quality.services.PropertyService;
 import org.junit.jupiter.api.DisplayName;
@@ -92,6 +93,52 @@ class PropertyControllerTest {
                 .andExpect(jsonPath("$[0].rooms", hasSize(2)));
     }
 
+    @Test
+    @DisplayName("Should return a room with the largest area")
+    void testGetRoomWithLargestArea() throws Exception {
+        Long propertyId = 1L;
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get("/properties/" + propertyId + "/largestRoom")
+                .accept(MediaType.APPLICATION_JSON);
+        RoomDTO room = new RoomDTO(3L, "largest empty room", 10., 10.);
+
+        when(propertyService.getLargestRoom(propertyId)).thenReturn(room);
+
+        mock.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.width").value(10.))
+                .andExpect(jsonPath("$.length").value(10.))
+                .andExpect(jsonPath("$.name").value("largest empty room"));
+    }
+
+    @Test
+    @DisplayName("Should throw exception when property does not exist")
+    void testFailGetRoomWithLargestArea() throws Exception {
+        Long propertyId = 1L;
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get("/properties/" + propertyId + "/largestRoom")
+                .accept(MediaType.APPLICATION_JSON);
+
+        when(propertyService.getLargestRoom(propertyId)).thenThrow(ResourceNotFoundException.class);
+
+        mock.perform(request)
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @DisplayName("Should throw exception when property has no room")
+    void testFailToFindRoomWithLargestArea() throws Exception {
+        Long propertyId = 1L;
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get("/properties/" + propertyId + "/largestRoom")
+                .accept(MediaType.APPLICATION_JSON);
+
+        when(propertyService.getLargestRoom(propertyId)).thenThrow(PropertyHasNoRoomsException.class);
+
+        mock.perform(request)
+                .andExpect(status().isUnprocessableEntity());
+    }
+
     private PropertyDTO createSomePropertyDTO(String name, int numberRooms) {
         DistrictDTO district = new DistrictDTO(1L,
                 "Downtown",
@@ -106,7 +153,7 @@ class PropertyControllerTest {
     private List<RoomDTO> createListOfRooms(int number) {
         List<RoomDTO> rooms = new ArrayList<>();
         for (int i = 0; i < number; i++) {
-            rooms.add(new RoomDTO((long) i, "empty room", 1., 1.));
+            rooms.add(new RoomDTO((long) (i+1), "empty room", 1., 1.));
         }
         return rooms;
     }
