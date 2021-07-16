@@ -7,11 +7,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 public class UpsertRoomDTO {
-    
-   // @NotBlank(message = "O campo não pode estar vazio.")
-    //@Size(min = 1, message = "O nome do cômodo deve conter mais que um caracter.")
-//    @Size(max = 30, message = "O nome do cômodo não pode exceder 30 caracteres.")
-//    @Pattern(regexp = "^[A-Z].*$", message = "O nome do cômodo deve começar com uma letra maiúscula.")
+
     @Named(fieldName = "nome da sala")
     private String name;
 
