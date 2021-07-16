@@ -4,14 +4,10 @@ import desafio_quality.dtos.CreateDistrictDTO;
 import desafio_quality.dtos.DistrictDTO;
 import desafio_quality.entities.District;
 import desafio_quality.exceptions.ResourceNotFoundException;
-import desafio_quality.entities.District;
-import desafio_quality.exceptions.ResourceNotFoundException;
 import desafio_quality.repositories.DistrictRepository;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
