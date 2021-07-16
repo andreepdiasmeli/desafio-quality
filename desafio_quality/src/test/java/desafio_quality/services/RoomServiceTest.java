@@ -2,6 +2,7 @@ package desafio_quality.services;
 
 import desafio_quality.dtos.RoomDTO;
 import desafio_quality.dtos.UpsertRoomDTO;
+
 import desafio_quality.entities.District;
 import desafio_quality.entities.Property;
 import desafio_quality.entities.Room;
@@ -71,5 +72,63 @@ public class RoomServiceTest {
 
         assertThrows(ResourceNotFoundException.class, 
             () -> roomService.updateRoom(roomId, upsertRoomDTO));
+    }
+
+    @Test
+    @DisplayName("Should delete a room given a valid id.")
+    void testDeleteRoomWithAValidId(){
+        Long roomId = 1L;
+
+        when(roomRepository.findById(any(Long.class))).thenReturn(Optional.of(new Room()));
+        doNothing().when(roomRepository).deleteById(any(Long.class));
+
+        assertDoesNotThrow(() -> {
+            roomService.deleteRoom(roomId);
+        });
+    }
+
+    @Test
+    @DisplayName("Should throw exception when deleting a room given an invalid id.")
+    void testDeleteRoomWithAnInvalidId(){
+        Long roomId = 11L;
+
+        when(roomRepository.findById(any(Long.class))).thenThrow(ResourceNotFoundException.class);
+        doNothing().when(roomRepository).deleteById(any(Long.class));
+
+        assertThrows(ResourceNotFoundException.class, () -> {
+            roomService.deleteRoom(roomId);
+        });
+    }
+
+    @Test
+    @DisplayName("Should return a room when finding with a valid id.")
+    void testFindRoomByIdWithAValidId(){
+        Long roomId = 1L;
+
+        District mockDistrict = new District("Costa e Silva", new BigDecimal("3000"));
+        Property mockProperty = new Property("Casinha", mockDistrict);
+        Room mockRoom = new Room("Quarto", 1.0, 1.0, mockProperty);
+        when(roomRepository.findById(any(Long.class))).thenReturn(Optional.of(mockRoom));
+
+        Room room = roomService.findById(roomId);
+
+        District expectedDistrict = new District(mockDistrict.getName(), mockDistrict.getSquareMeterValue());
+        Property expectedProperty = new Property(mockProperty.getName(), expectedDistrict);
+        Room expectedRoom = new Room(mockRoom.getName(), mockRoom.getWidth(), mockRoom.getLength(), expectedProperty);
+        assertThat(expectedRoom).usingRecursiveComparison().isEqualTo(room);
+    }
+
+    @Test
+    @DisplayName("Should throw exception when finding a room with invalid id.")
+    void testFindDistrictyByIdWithAnInvalidId(){
+        Long roomId = 1L;
+
+        when(roomRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+
+        Exception ex = assertThrows(ResourceNotFoundException.class, () -> {
+            roomService.findById(roomId);
+        });
+
+        assertEquals("Room " + roomId + " does not exist.", ex.getMessage());
     }
 }
