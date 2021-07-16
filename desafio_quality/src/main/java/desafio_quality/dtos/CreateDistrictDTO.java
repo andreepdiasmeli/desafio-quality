@@ -1,8 +1,5 @@
 package desafio_quality.dtos;
 
-import desafio_quality.dtos.validation.FirstValidation;
-import desafio_quality.dtos.validation.SecondValidation;
-import desafio_quality.dtos.validation.ValidationSequence;
 
 import javax.validation.GroupSequence;
 import javax.validation.constraints.*;
@@ -12,7 +9,7 @@ public class CreateDistrictDTO {
 
     @Size(max = 45, message="O nome do bairro não pode exceder 45 caracteres.")
     @Pattern(regexp = "^[A-Z].*$", message = "O nome do bairro deve começar com uma letra maiúscula.")
-    @NotBlank(message = "O campo não pode estar vazio.")
+    //@NotBlank(message = "O campo não pode estar vazio.")
     private String name;
 
     @NotNull(message = "O valor do metro quadrado não pode estar vazio.")
