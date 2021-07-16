@@ -1,4 +1,4 @@
-package desafio_quality.controllers;
+package desafio_quality.unit.services.controllers;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.Matchers.hasSize;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import desafio_quality.controllers.PropertyController;
 import desafio_quality.dtos.DistrictDTO;
 import desafio_quality.dtos.PropertyDTO;
 import desafio_quality.dtos.*;

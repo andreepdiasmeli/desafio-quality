@@ -1,4 +1,4 @@
-package desafio_quality.services;
+package desafio_quality.unit.services;
 
 import desafio_quality.dtos.CreateDistrictDTO;
 import desafio_quality.dtos.DistrictDTO;
@@ -11,6 +11,7 @@ import desafio_quality.entities.District;
 import desafio_quality.dtos.CreateDistrictDTO;
 import desafio_quality.exceptions.ResourceNotFoundException;
 import desafio_quality.repositories.DistrictRepository;
+import desafio_quality.services.DistrictService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

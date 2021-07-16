@@ -1,4 +1,4 @@
-package desafio_quality.services;
+package desafio_quality.unit.services;
 
 import desafio_quality.dtos.*;
 import desafio_quality.entities.District;
@@ -8,6 +8,8 @@ import desafio_quality.exceptions.PropertyHasNoRoomsException;
 import desafio_quality.exceptions.ResourceNotFoundException;
 import desafio_quality.repositories.DistrictRepository;
 import desafio_quality.repositories.PropertyRepository;
+import desafio_quality.services.DistrictService;
+import desafio_quality.services.PropertyService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

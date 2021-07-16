@@ -35,12 +35,13 @@ public class DBService {
         Property p1 = new Property("Bem Viver", d1);
         Property p2 = new Property("Vila Toscana", d2);
         Property p3 = new Property("Jardim Imperiale", d3);
+        Property p4 = new Property("Bela Vista", d3);
 
-        propertyRepository.saveAll(List.of(p1, p2, p3));
+        propertyRepository.saveAll(List.of(p1, p2, p3, p4));
 
         d1.setProperties(List.of((p1)));
         d2.setProperties(List.of((p2)));
-        d3.setProperties(List.of((p3)));
+        d3.setProperties(List.of(p3, p4));
 
         districtRepository.saveAll(List.of(d1, d2, d3));
 
@@ -60,5 +61,10 @@ public class DBService {
         p3.setRooms(List.of(r5, r6));
 
         propertyRepository.saveAll(List.of(p1, p2, p3));
+    }
+
+    public void knockDownDB() {
+        propertyRepository.deleteAll();
+        districtRepository.deleteAll();
     }
 }

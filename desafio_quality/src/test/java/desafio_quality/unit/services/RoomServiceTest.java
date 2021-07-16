@@ -1,4 +1,4 @@
-package desafio_quality.services;
+package desafio_quality.unit.services;
 
 import desafio_quality.dtos.RoomDTO;
 import desafio_quality.dtos.UpsertRoomDTO;
@@ -7,6 +7,8 @@ import desafio_quality.entities.Property;
 import desafio_quality.entities.Room;
 import desafio_quality.exceptions.ResourceNotFoundException;
 import desafio_quality.repositories.RoomRepository;
+import desafio_quality.services.PropertyService;
+import desafio_quality.services.RoomService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

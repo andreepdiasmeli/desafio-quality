@@ -1,6 +1,7 @@
-package desafio_quality.controllers;
+package desafio_quality.unit.services.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import desafio_quality.controllers.DistrictController;
 import desafio_quality.dtos.*;
 import desafio_quality.exceptions.ResourceNotFoundException;
 import desafio_quality.dtos.CreateDistrictDTO;

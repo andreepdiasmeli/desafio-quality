@@ -1,6 +1,7 @@
-package desafio_quality.controllers;
+package desafio_quality.unit.services.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import desafio_quality.controllers.RoomController;
 import desafio_quality.dtos.RoomDTO;
 import desafio_quality.dtos.UpsertRoomDTO;
 import desafio_quality.exceptions.ResourceNotFoundException;
