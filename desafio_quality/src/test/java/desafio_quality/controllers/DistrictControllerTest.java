@@ -2,6 +2,7 @@ package desafio_quality.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import desafio_quality.dtos.*;
+import desafio_quality.exceptions.ResourceNotFoundException;
 import desafio_quality.services.DistrictService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -107,6 +108,27 @@ class DistrictControllerTest {
                 .andExpect(jsonPath("$.id").value(districtId))
                 .andExpect(jsonPath("$.name").value(createDistrictDTO.getName()))
                 .andExpect(jsonPath("$.squareMeterValue").value(createDistrictDTO.getSquareMeterValue()));
+    }
+
+    @Test
+    @DisplayName("Should return Unprocessable Entity when updating a district with a non existent ID.")
+    void testFailureUpdateOfDistrict() throws Exception {
+
+        Long districtId = 2L;
+
+        CreateDistrictDTO createDistrictDTO = new CreateDistrictDTO("District", new BigDecimal(2000));
+        String districtJSON = mapper.writeValueAsString(createDistrictDTO);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .put("/districts/"+ districtId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(districtJSON);
+
+        when(districtService.updateDistrict(any(Long.class), any(CreateDistrictDTO.class))).thenThrow(ResourceNotFoundException.class);
+
+        mock.perform(request)
+                .andExpect(status().isUnprocessableEntity());
     }
 
 

@@ -95,6 +95,29 @@ class PropertyControllerTest {
     }
 
     @Test
+    @DisplayName("Should return Unprocessable Entity when updating a property with a non existent ID.")
+    void testFailureGetOfAProperty() throws Exception {
+        Long propertyId = 2L;
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get("/properties/" + propertyId)
+                .accept(MediaType.APPLICATION_JSON);
+
+        DistrictDTO districtDTO = new DistrictDTO();
+
+        List<RoomDTO> rooms = Arrays.asList(
+                new RoomDTO(1L, "Sala", 20.0, 18.0)
+        );
+
+        PropertyDTO propertyDTO = new PropertyDTO(propertyId,"propriedade", districtDTO, rooms);
+
+        when(propertyService.getPropertyById(any(Long.class))).thenThrow(ResourceNotFoundException.class);
+
+        mock.perform(request)
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
     @DisplayName("Should return total property area by id.")
     void testGetOfTotalAreaPropertyById() throws Exception {
         Long propertyId = 1L;
