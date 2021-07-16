@@ -22,6 +22,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.math.BigDecimal;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = RoomController.class)
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
-public class RoomControllerTest {
+class RoomControllerTest {
 
     @Autowired
     private MockMvc mock;
@@ -44,6 +51,43 @@ public class RoomControllerTest {
 
     @MockBean
     private RoomService roomService;
+
+    @Test
+    @DisplayName("Should return the specific room by ID.")
+    void testGetRoomById() throws Exception {
+        Long roomId = 1L;
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get("/rooms/" + roomId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
+
+        RoomDTO roomDTO = new RoomDTO(1L, "Quarto 1", 3.0,5.0);
+        when(roomService.getRoomById(any(Long.class))).thenReturn(roomDTO);
+
+        mock.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.name").value("Quarto 1"))
+                .andExpect(jsonPath("$.width").value(3.0))
+                .andExpect(jsonPath("$.length").value(5.0));
+    }
+
+    @Test
+    @DisplayName("Should return Unprocessable Entity when searching a room with a non existent ID.")
+    void testGetRoomByInvalidId() throws Exception {
+        Long roomId = 2L;
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get("/rooms/" + roomId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
+
+        when(roomService.getRoomById(any(Long.class))).thenThrow(ResourceNotFoundException.class);
+
+        mock.perform(request)
+                .andExpect(status().isUnprocessableEntity());
+    }
 
     @Test
     @DisplayName("Should return a new room")
