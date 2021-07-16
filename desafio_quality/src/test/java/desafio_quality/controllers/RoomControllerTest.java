@@ -72,7 +72,7 @@ public class RoomControllerTest {
 
     @Test
     @DisplayName("Should return Unprocessable Entity when updating a room with a non existent ID.")
-    void testFailureCreationOfADistrict() throws Exception {
+    void testFailureUpdateOfASpecificRoom() throws Exception {
         Long roomId = 2L;
 
         UpsertRoomDTO upsertRoomDto = new UpsertRoomDTO("Quarto", 5.0, 3.0);
