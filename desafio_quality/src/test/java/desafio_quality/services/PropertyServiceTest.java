@@ -35,7 +35,7 @@ public class PropertyServiceTest {
     private PropertyRepository propertyRepository;
 
     @Test
-    @DisplayName("Should return a dto of property value.")
+    @DisplayName("Should return a dto of property value given a valid id.")
     void testGetValueWithValidId(){
         // given - cenário
         Long propertyId = 1L;
@@ -57,9 +57,8 @@ public class PropertyServiceTest {
         assertThat(propertyValueDTO).usingRecursiveComparison().isEqualTo(expected);
     }
 
-
     @Test
-    @DisplayName("Should return execption when getting a value.")
+    @DisplayName("Should return exception when getting a value of a property with invalid id.")
     void testGetValueWithInvalidId(){
         Long propertyId = 1L;
         when(propertyRepository.findById(any(Long.class))).thenThrow(ResourceNotFoundException.class);
