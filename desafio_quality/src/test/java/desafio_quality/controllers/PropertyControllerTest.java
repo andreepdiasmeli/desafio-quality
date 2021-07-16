@@ -1,11 +1,21 @@
 package desafio_quality.controllers;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.Matchers.hasSize;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import desafio_quality.dtos.DistrictDTO;
 import desafio_quality.dtos.PropertyDTO;
+import desafio_quality.dtos.*;
+
+import desafio_quality.dtos.PropertyRoomsAreaDTO;
 import desafio_quality.dtos.PropertyValueDTO;
 import desafio_quality.dtos.RoomDTO;
 import desafio_quality.exceptions.PropertyHasNoRoomsException;
+import desafio_quality.dtos.RoomAreaDTO;
 import desafio_quality.exceptions.ResourceNotFoundException;
 import desafio_quality.services.PropertyService;
 import org.junit.jupiter.api.DisplayName;
@@ -22,6 +32,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +42,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebMvcTest(controllers = PropertyController.class)
 @AutoConfigureMockMvc
@@ -74,6 +88,150 @@ class PropertyControllerTest {
         mock.perform(request)
                 .andExpect(status().isUnprocessableEntity());
     }
+
+    @Test
+    @DisplayName("Should return a list of the areas of the rooms.")
+    void testRoomAreas() throws Exception {
+        Long propertyId = 1L;
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+            .get("/properties/" + propertyId + "/roomsArea")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON);
+
+        List<RoomAreaDTO> roomAreas = new ArrayList<>();
+        roomAreas.add(new RoomAreaDTO(1L, "Cozinha", 15.0));
+        roomAreas.add(new RoomAreaDTO(2L, "Quarto", 5.0));
+
+        PropertyRoomsAreaDTO propertyRoomsAreaDTO = new PropertyRoomsAreaDTO(
+            1L, "Propriedade 1", roomAreas
+        );
+
+        when(propertyService.getRoomsArea(any(Long.class))).thenReturn(propertyRoomsAreaDTO);
+
+        mock.perform(request)
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").value(propertyId))
+            .andExpect(jsonPath("$.name").value("Propriedade 1"))
+            .andExpect(jsonPath("$.rooms", hasSize(2)));
+    }
+
+    @Test
+    @DisplayName("Should return Unprocessable Entity when trying to list the areas of the rooms with an invalid property ID.")
+    void testRoomAreasWithInvalidPropertyId() throws Exception {
+        Long propertyId = 2L;
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+            .get("/properties/" + propertyId + "/roomsArea")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON);
+
+        when(propertyService.getRoomsArea(any(Long.class))).thenThrow(ResourceNotFoundException.class);
+
+        mock.perform(request)
+            .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @DisplayName("Should return a property by id.")
+    void testGetOfAPropertyById() throws Exception {
+        Long propertyId = 1L;
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get("/properties/" + propertyId)
+                .accept(MediaType.APPLICATION_JSON);
+
+        DistrictDTO districtDTO = new DistrictDTO();
+
+        List<RoomDTO> rooms = Arrays.asList(
+                new RoomDTO(1L, "Sala", 20.0, 18.0)
+        );
+
+        PropertyDTO propertyDTO = new PropertyDTO(propertyId,"propriedade", districtDTO, rooms);
+
+        when(propertyService.getPropertyById(any(Long.class))).thenReturn(propertyDTO);
+
+        mock.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(propertyId));
+    }
+
+    @Test
+    @DisplayName("Should return Unprocessable Entity when updating a property with a non existent ID.")
+    void testFailureGetOfAProperty() throws Exception {
+        Long propertyId = 2L;
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get("/properties/" + propertyId)
+                .accept(MediaType.APPLICATION_JSON);
+
+        DistrictDTO districtDTO = new DistrictDTO();
+
+        List<RoomDTO> rooms = Arrays.asList(
+                new RoomDTO(1L, "Sala", 20.0, 18.0)
+        );
+
+        PropertyDTO propertyDTO = new PropertyDTO(propertyId,"propriedade", districtDTO, rooms);
+
+        when(propertyService.getPropertyById(any(Long.class))).thenThrow(ResourceNotFoundException.class);
+
+        mock.perform(request)
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @DisplayName("Should return total property area by id.")
+    void testGetOfTotalAreaPropertyById() throws Exception {
+        Long propertyId = 1L;
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get("/properties/" + propertyId + "/roomsArea")
+                .accept(MediaType.APPLICATION_JSON);
+
+        List<RoomAreaDTO> rooms = Arrays.asList(
+                new RoomAreaDTO(1L, "Quartos", 200.0)
+        );
+
+        PropertyRoomsAreaDTO propertyRoomsAreaDTO = new PropertyRoomsAreaDTO(1L,"Quarto", rooms);
+
+        when(propertyService.getRoomsArea(any(Long.class))).thenReturn(propertyRoomsAreaDTO);
+
+        mock.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(propertyId));
+    }
+
+
+    @Test
+    @DisplayName("Should create a property.")
+    void testCreationOfProperty() throws Exception {
+
+      UpsertPropertyDTO upsertPropertyDTO = new UpsertPropertyDTO("Propriedade", 1L);
+
+
+        String propertyJSON = mapper.writeValueAsString(upsertPropertyDTO);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .post("/properties")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(propertyJSON);
+
+        DistrictDTO districtDTO = new DistrictDTO(1L,"Bairro",new BigDecimal(2000.00));
+
+        List<RoomDTO> rooms = Arrays.asList(
+                new RoomDTO(1L, "Sala", 20.0, 18.0)
+        );
+
+        PropertyDTO propertyDTO = new PropertyDTO(1L,"Propriedade", districtDTO, rooms);
+
+        when(propertyService.createProperty(any(UpsertPropertyDTO.class))).thenReturn(propertyDTO);
+
+        mock.perform(request)
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.name").value("Propriedade"))
+                .andExpect(jsonPath("$.district.name").value("Bairro"))
+                .andExpect(jsonPath("$.rooms", hasSize(1)));
+    }
+
 
     @Test
     @DisplayName("Should return the List of all properties.")
