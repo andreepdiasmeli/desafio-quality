@@ -19,11 +19,6 @@ public class DistrictService {
         this.districtRepository = districtRepository;
     }
 
-    public District findDiscrict(Long districtId) {
-        return this.districtRepository.findById(districtId).orElseThrow(() ->
-                new ResourceNotFoundException("District with ID " + districtId + " does not exist."));
-    }
-
     public District findDistrictById(Long districtId){
         return this.districtRepository.findById(districtId).orElseThrow(() ->
                 new ResourceNotFoundException("District "+ districtId+ " does not exist.")
@@ -41,7 +36,6 @@ public class DistrictService {
     }
 
     public DistrictDTO createDistrict(CreateDistrictDTO createDistrict){
-
         District district = new District(createDistrict.getName(), createDistrict.getSquareMeterValue());
 
         district = this.districtRepository.save(district);
