@@ -43,7 +43,7 @@ public class DistrictServiceTest {
     }
 
     @Test
-    @DisplayName("Should delete a district with an invalid ID.")
+    @DisplayName("Should not delete a district with an invalid ID.")
     void testDeleteDistrictWithInvalidID() {
         Long districtId = 2L;
 
