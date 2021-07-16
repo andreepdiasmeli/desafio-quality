@@ -1,6 +1,7 @@
 package desafio_quality.controllers;
 
 import desafio_quality.dtos.ExceptionDTO;
+import desafio_quality.dtos.ErrorMessageDTO;
 import desafio_quality.exceptions.PropertyHasNoRoomsException;
 import desafio_quality.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 @RestControllerAdvice
 public class ControllerAdvice {
@@ -24,14 +27,18 @@ public class ControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
+    public Map<String, List<ErrorMessageDTO>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, List<ErrorMessageDTO>> errors = new HashMap<>();
 
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
+            List<ErrorMessageDTO> errorMessages = 
+                errors.getOrDefault(fieldName, new ArrayList<>());
+            errorMessages.add(new ErrorMessageDTO(errorMessage));
+            errors.put(fieldName, errorMessages);
         });
+
         return errors;
     }
 }
