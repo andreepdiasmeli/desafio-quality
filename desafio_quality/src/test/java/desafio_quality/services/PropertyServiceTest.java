@@ -1,6 +1,8 @@
 package desafio_quality.services;
 
+import desafio_quality.dtos.PropertyRoomsAreaDTO;
 import desafio_quality.dtos.PropertyValueDTO;
+import desafio_quality.dtos.RoomAreaDTO;
 import desafio_quality.entities.District;
 import desafio_quality.entities.Property;
 import desafio_quality.entities.Room;
@@ -65,6 +67,52 @@ public class PropertyServiceTest {
 
         assertThrows(ResourceNotFoundException.class, () -> {
             propertyService.getValue(propertyId);
+        });
+    }
+
+    @Test
+    @DisplayName("Should return the rooms areas using a valid property ID.")
+    void testGetRoomsAreaByValidPropertyId() {
+        Long propertyId = 1L;
+        
+        District district = new District("Bom Retiro", new BigDecimal("2000"));
+        Property property = new Property("Minha casa", district);
+        List<Room> rooms = List.of(
+                new Room("Quarto", 2.0, 1.0, property),
+                new Room("Cozinha", 4.0, 2.0, property),
+                new Room("Sala", 2.0, 3.0, property));
+        property.setRooms(rooms);
+        
+        List<RoomAreaDTO> roomAreaDTOList = List.of(
+            new RoomAreaDTO(1L, "Quarto", 2.0),
+            new RoomAreaDTO(2L, "Cozinha", 8.0),
+            new RoomAreaDTO(3L, "Sala", 6.0)
+        );
+
+        when(propertyRepository.findById(any(Long.class))).thenReturn(Optional.of(property));
+
+        PropertyRoomsAreaDTO expectPropertyRoomsAreaDTO = 
+            new PropertyRoomsAreaDTO(propertyId, property.getName(), roomAreaDTOList);
+
+        PropertyRoomsAreaDTO actualPropertyRoomsAreaDTO =
+            propertyService.getRoomsArea(propertyId);
+
+        assertThat(actualPropertyRoomsAreaDTO)
+            .usingRecursiveComparison()
+            .ignoringFields("id")
+            .ignoringFields("rooms.id")
+            .isEqualTo(expectPropertyRoomsAreaDTO);
+    }
+
+    @Test
+    @DisplayName("Should return exception when getting room areas using an invalid property ID.")
+    void testGetRoomsAreaByInvalidPropertyId() {
+        Long propertyId = 2L;
+
+        when(propertyRepository.findById(any(Long.class))).thenThrow(ResourceNotFoundException.class);
+
+        assertThrows(ResourceNotFoundException.class, () -> {
+            propertyService.getRoomsArea(propertyId);
         });
     }
 
