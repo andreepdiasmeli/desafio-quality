@@ -18,9 +18,7 @@ O sistema desenvolvido consiste em uma API REST de uma empresa imobiliária **Se
 
 ## Requisitos 
 
-*US-0001*: Calcule o total de metros quadrados de uma propriedade
-*US-0002*: Indique o valor de uma propriedade com base em seus cômodos e
-medidas. 
-*US-0003*: Determine qual é o maior cômodo.
-*US-0004*: Determinar a quantidade de metros quadrados que tem cada
-cômodo de uma propriedade.
+* *US-0001*: Calcule o total de metros quadrados de uma propriedade
+* *US-0002*: Indique o valor de uma propriedade com base em seus cômodos e medidas. 
+* *US-0003*: Determine qual é o maior cômodo.
+* *US-0004*: Determinar a quantidade de metros quadrados que tem cada cômodo de uma propriedade.
