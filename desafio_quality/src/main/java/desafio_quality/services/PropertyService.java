@@ -52,7 +52,6 @@ public class PropertyService {
                 .collect(Collectors.toList());
     }
 
-
     public PropertyDTO createProperty(UpsertPropertyDTO createProperty) {
         District district = this.districtService.findDistrictById(createProperty.getDistrictId());
         Property property = new Property(createProperty.getName(), district);
