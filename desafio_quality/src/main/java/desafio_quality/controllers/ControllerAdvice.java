@@ -31,14 +31,41 @@ public class ControllerAdvice {
         Map<String, List<ErrorMessageDTO>> errors = new HashMap<>();
 
         ex.getBindingResult().getAllErrors().forEach((error) -> {
+
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
+
             List<ErrorMessageDTO> errorMessages = 
                 errors.getOrDefault(fieldName, new ArrayList<>());
+
             errorMessages.add(new ErrorMessageDTO(errorMessage));
+
             errors.put(fieldName, errorMessages);
         });
 
         return errors;
     }
+    /*
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, List<String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, List<String>> errors = new HashMap<>();
+
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+
+            List<String> errorMessages =
+                    errors.getOrDefault(fieldName, new ArrayList<>());
+
+            errorMessages.add(errorMessage);
+
+            errors.put(fieldName, errorMessages);
+        });
+
+        return errors;
+    }    */
+
 }

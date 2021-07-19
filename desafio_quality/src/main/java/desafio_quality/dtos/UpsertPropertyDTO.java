@@ -5,14 +5,13 @@ import javax.validation.constraints.*;
 
 @Valid
 public class UpsertPropertyDTO {
-    @NotNull(message = "O nome da propriedade não pode ser vazio.")
-    @Size(min = 1, message = "O nome da propriedade não pode ser vazio.")
-    @Size(min = 1, message = "O nome da propriedade não pode ser vazio.")
+
+    @NotBlank(message = "O nome da propriedade não pode ser vazio.")
     @Size(max = 30, message = "O comprimento do nome da propriedade não pode exceder 30 caracteres.")
-    @Pattern(regexp = "^[A-Z].*$", message = "O nome do cômodo deve começar com uma letra maiúscula.")
+    @Pattern(regexp = "^[A-Z].*$", message = "O nome da propriedade deve começar com uma letra maiúscula.")
     private String name;
 
-    @NotNull
+    @NotNull(message = "O id do district não pode estar vazio.")
     private Long districtId;
 
     public UpsertPropertyDTO() {

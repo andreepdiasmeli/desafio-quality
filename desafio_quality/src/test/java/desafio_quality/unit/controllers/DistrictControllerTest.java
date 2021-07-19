@@ -1,4 +1,4 @@
-package desafio_quality.unit.services.controllers;
+package desafio_quality.unit.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import desafio_quality.controllers.DistrictController;
@@ -9,6 +9,7 @@ import desafio_quality.dtos.DistrictDTO;
 
 import desafio_quality.exceptions.ResourceNotFoundException;
 import desafio_quality.services.DistrictService;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,6 +27,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -86,9 +88,7 @@ class DistrictControllerTest {
             .content(districtJSON);
 
         mock.perform(request)
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.name").value("O nome do bairro deve começar com uma letra maiúscula."))
-            .andExpect(jsonPath("$.squareMeterValue").value("O valor de metros quadrados não deve exceder 13 digitos."));
+            .andExpect(status().isBadRequest());
     }
 
     @Test

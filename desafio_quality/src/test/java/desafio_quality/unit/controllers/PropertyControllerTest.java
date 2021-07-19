@@ -1,4 +1,4 @@
-package desafio_quality.unit.services.controllers;
+package desafio_quality.unit.controllers;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -203,8 +203,7 @@ class PropertyControllerTest {
                 .content(propertyUpdateJson);
 
         mock.perform(request)
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.name").value("O nome do cômodo deve começar com uma letra maiúscula."));
+                .andExpect(status().isBadRequest());
     }
 
     @Test

@@ -1,4 +1,4 @@
-package desafio_quality.unit.services.controllers;
+package desafio_quality.unit.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import desafio_quality.controllers.RoomController;
@@ -242,10 +242,7 @@ class RoomControllerTest {
             .content(roomUpdateJson);
 
         mock.perform(request)
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.name").value("O nome do cômodo deve começar com uma letra maiúscula."))
-            .andExpect(jsonPath("$.width").value("A largura mínima permitida por cômodo é de 1 metro."))
-            .andExpect(jsonPath("$.length").value("O comprimento máximo permitido por cômodo é de 33 metros."));
+            .andExpect(status().isBadRequest());
     }
 
     private List<RoomDTO> createListOfRooms(int number) {
