@@ -28,7 +28,7 @@ public class CreateDistrictDTOTest {
     public void testEmptyName() {
         CreateDistrictDTO dto = new CreateDistrictDTO("", new BigDecimal("8000"));
         Set<ConstraintViolation<CreateDistrictDTO>> violations = validator.validate(dto);
-        assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("O campo não pode estar vazio.")));
+        assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("O nome do bairro não pode estar vazio.")));
     }
 
     @Test

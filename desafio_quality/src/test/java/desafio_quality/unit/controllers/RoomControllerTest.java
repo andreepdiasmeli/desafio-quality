@@ -1,4 +1,4 @@
-package desafio_quality.unit.controllers;
+package desafio_quality.unit.services.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import desafio_quality.controllers.RoomController;
@@ -22,13 +22,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.math.BigDecimal;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import java.util.ArrayList;
 import java.util.List;

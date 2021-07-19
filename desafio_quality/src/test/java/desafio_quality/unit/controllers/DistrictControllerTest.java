@@ -1,12 +1,9 @@
-package desafio_quality.unit.controllers;
+package desafio_quality.unit.services.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import desafio_quality.controllers.DistrictController;
-import desafio_quality.dtos.*;
-import desafio_quality.exceptions.ResourceNotFoundException;
 import desafio_quality.dtos.CreateDistrictDTO;
 import desafio_quality.dtos.DistrictDTO;
-
 import desafio_quality.exceptions.ResourceNotFoundException;
 import desafio_quality.services.DistrictService;
 import org.hamcrest.Matchers;
@@ -24,19 +21,12 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-
 import static org.mockito.Mockito.*;
-
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -88,7 +78,9 @@ class DistrictControllerTest {
             .content(districtJSON);
 
         mock.perform(request)
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.name.[0].error").value("O nome do bairro não pode estar vazio."))
+            .andExpect(jsonPath("$.squareMeterValue.[0].error").value("O valor de metros quadrados não deve exceder 13 digitos."));
     }
 
     @Test

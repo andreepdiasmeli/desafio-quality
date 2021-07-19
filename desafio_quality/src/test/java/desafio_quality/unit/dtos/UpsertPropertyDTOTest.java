@@ -27,7 +27,7 @@ public class UpsertPropertyDTOTest {
     public void testEmptyName() {
         UpsertPropertyDTO dto = new UpsertPropertyDTO("", 1L);
         Set<ConstraintViolation<UpsertPropertyDTO>> violations = validator.validate(dto);
-        assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("O nome da propriedade não pode ser vazio.")));
+        assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("O nome da propriedade não pode estar vazio.")));
     }
 
     @Test

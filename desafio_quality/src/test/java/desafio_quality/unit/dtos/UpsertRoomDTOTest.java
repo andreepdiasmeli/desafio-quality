@@ -23,17 +23,10 @@ public class UpsertRoomDTOTest {
     }
 
     @Test
-    public void testNullName() {
-        UpsertRoomDTO dto = new UpsertRoomDTO(null, 5.0, 10.0);
-        Set<ConstraintViolation<UpsertRoomDTO>> violations = validator.validate(dto);
-        assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("O campo não pode estar nulo.")));
-    }
-
-    @Test
     public void testEmptyName() {
         UpsertRoomDTO dto = new UpsertRoomDTO("", 5.0, 10.0);
         Set<ConstraintViolation<UpsertRoomDTO>> violations = validator.validate(dto);
-        assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("O nome do cômodo deve conter mais que um caracter.")));
+        assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("O nome do cômodo não pode estar vazio.")));
     }
 
     @Test
