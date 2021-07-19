@@ -236,7 +236,7 @@ class RoomControllerTest {
 
         mock.perform(request)
             .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.name").value("O campo nome da sala não pode estar em branco."))
+            .andExpect(jsonPath("$.name").value("O nome da sala não pode estar vazio."))
             .andExpect(jsonPath("$.width").value("A largura mínima permitida por cômodo é de 1 metro."))
             .andExpect(jsonPath("$.length").value("O comprimento máximo permitido por cômodo é de 33 metros."));
     }

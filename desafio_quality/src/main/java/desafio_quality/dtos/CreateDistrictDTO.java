@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 
 public class CreateDistrictDTO {
 
-    @Named
+    @Named(className = "o bairro")
     @Size(max=45, message = "O comprimento do nome não pode exceder 45 caracteres.")
     private String name;
 

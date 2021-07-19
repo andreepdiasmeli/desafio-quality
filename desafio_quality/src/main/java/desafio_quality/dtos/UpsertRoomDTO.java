@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 
 public class UpsertRoomDTO {
 
-    @Named
+    @Named(className = "a sala")
     @Size(max=30, message = "O comprimento do nome não pode exceder 30 caracteres.")
     private String name;
 

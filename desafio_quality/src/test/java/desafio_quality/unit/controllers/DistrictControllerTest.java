@@ -75,7 +75,7 @@ class DistrictControllerTest {
 
         mock.perform(request)
             .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.name").value("O campo nome do bairro deve começar com uma letra maiúscula."))
+            .andExpect(jsonPath("$.name").value("O nome do bairro deve começar com uma letra maiúscula."))
             .andExpect(jsonPath("$.squareMeterValue").value("O valor de metros quadrados não deve exceder 13 digitos."));
     }
 

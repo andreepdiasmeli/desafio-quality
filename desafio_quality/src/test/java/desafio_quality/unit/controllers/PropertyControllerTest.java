@@ -184,7 +184,7 @@ class PropertyControllerTest {
 
         mock.perform(request)
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.name").value("O campo nome da propriedade não pode ser vazio."));
+                .andExpect(jsonPath("$.name").value("O nome da propriedade não pode estar vazio."));
     }
 
     @Test
