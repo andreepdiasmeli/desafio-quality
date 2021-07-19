@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 public class CreateDistrictDTO {
 
     @Named(className = "o bairro")
-    @Size(max=45, message = "O comprimento do nome não pode exceder 45 caracteres.")
+    @Size(max=45, message = "O nome do bairro não pode exceder 45 caracteres.")
     private String name;
 
     @NotNull(message = "O valor do metro quadrado não pode estar vazio.")

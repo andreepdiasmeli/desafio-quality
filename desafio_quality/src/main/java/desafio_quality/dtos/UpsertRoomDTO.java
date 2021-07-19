@@ -9,16 +9,16 @@ import javax.validation.constraints.Size;
 
 public class UpsertRoomDTO {
 
-    @Named(className = "a sala")
-    @Size(max=30, message = "O comprimento do nome não pode exceder 30 caracteres.")
+    @Named(className = "o cômodo")
+    @Size(max=30, message = "O nome do cômodo não pode exceder 30 caracteres.")
     private String name;
 
-    @NotNull(message = "A largura do cômodo não pode estar vazia.")
+    //@NotNull(message = "A largura do cômodo não pode estar vazia.")
     @Min(value = 1, message = "A largura mínima permitida por cômodo é de 1 metro.")
     @Max(value = 25, message = "A largura máxima permitida por cômodo é de 25 metros.")
     private double width;
 
-    @NotNull(message = "O comprimento do cômodo não pode estar vazia.")
+    //@NotNull(message = "O comprimento do cômodo não pode estar vazia.")
     @Min(value = 1, message = "O comprimento mínimo permitido por cômodo é de 1 metro.")
     @Max(value = 33, message = "O comprimento máximo permitido por cômodo é de 33 metros.")
     private double length;

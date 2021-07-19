@@ -6,6 +6,7 @@ import desafio_quality.dtos.CreateDistrictDTO;
 import desafio_quality.dtos.DistrictDTO;
 import desafio_quality.exceptions.ResourceNotFoundException;
 import desafio_quality.services.DistrictService;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +22,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.math.BigDecimal;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -64,7 +68,7 @@ class DistrictControllerTest {
     @Test
     @DisplayName("Should not create a district with incorrect data.")
     void testPostAnInvalidDistrict() throws Exception {
-        CreateDistrictDTO district = new CreateDistrictDTO("small", new BigDecimal("123456789123456789"));
+        CreateDistrictDTO district = new CreateDistrictDTO("", new BigDecimal("123456789123456789"));
         String districtJSON = mapper.writeValueAsString(district);
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
@@ -75,8 +79,8 @@ class DistrictControllerTest {
 
         mock.perform(request)
             .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.name").value("O nome do bairro deve começar com uma letra maiúscula."))
-            .andExpect(jsonPath("$.squareMeterValue").value("O valor de metros quadrados não deve exceder 13 digitos."));
+            .andExpect(jsonPath("$.name.[0].error").value("O nome do bairro não pode estar vazio."))
+            .andExpect(jsonPath("$.squareMeterValue.[0].error").value("O valor de metros quadrados não deve exceder 13 digitos."));
     }
 
     @Test

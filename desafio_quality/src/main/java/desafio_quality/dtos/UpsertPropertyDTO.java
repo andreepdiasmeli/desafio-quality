@@ -8,11 +8,12 @@ import javax.validation.constraints.Size;
 
 @Valid
 public class UpsertPropertyDTO {
+
     @Named(className = "a propriedade")
-    @Size(max=30, message = "O comprimento do nome não pode exceder 30 caracteres.")
+    @Size(max=30, message = "O comprimento do nome da propriedade não pode exceder 30 caracteres.")
     private String name;
 
-    @NotNull
+    @NotNull(message = "O id do district não pode estar vazio.")
     private Long districtId;
 
     public UpsertPropertyDTO() {

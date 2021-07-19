@@ -235,10 +235,7 @@ class RoomControllerTest {
             .content(roomUpdateJson);
 
         mock.perform(request)
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.name").value("O nome da sala não pode estar vazio."))
-            .andExpect(jsonPath("$.width").value("A largura mínima permitida por cômodo é de 1 metro."))
-            .andExpect(jsonPath("$.length").value("O comprimento máximo permitido por cômodo é de 33 metros."));
+            .andExpect(status().isBadRequest());
     }
 
     private List<RoomDTO> createListOfRooms(int number) {
