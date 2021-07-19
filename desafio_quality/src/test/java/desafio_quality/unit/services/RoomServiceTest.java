@@ -1,5 +1,24 @@
 package desafio_quality.unit.services;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
+
+import java.math.BigDecimal;
+import java.util.Optional;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import desafio_quality.dtos.RoomDTO;
 import desafio_quality.dtos.UpsertRoomDTO;
 import desafio_quality.entities.District;
@@ -9,25 +28,6 @@ import desafio_quality.exceptions.ResourceNotFoundException;
 import desafio_quality.repositories.RoomRepository;
 import desafio_quality.services.PropertyService;
 import desafio_quality.services.RoomService;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.math.BigDecimal;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest

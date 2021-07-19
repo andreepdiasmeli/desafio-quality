@@ -1,6 +1,34 @@
 package desafio_quality.unit.services;
 
-import desafio_quality.dtos.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import desafio_quality.dtos.DistrictDTO;
+import desafio_quality.dtos.PropertyAreaDTO;
+import desafio_quality.dtos.PropertyDTO;
+import desafio_quality.dtos.PropertyRoomsAreaDTO;
+import desafio_quality.dtos.PropertyValueDTO;
+import desafio_quality.dtos.RoomAreaDTO;
+import desafio_quality.dtos.RoomDTO;
+import desafio_quality.dtos.UpsertPropertyDTO;
+import desafio_quality.dtos.UpsertRoomDTO;
 import desafio_quality.entities.District;
 import desafio_quality.entities.Property;
 import desafio_quality.entities.Room;
@@ -10,25 +38,6 @@ import desafio_quality.repositories.DistrictRepository;
 import desafio_quality.repositories.PropertyRepository;
 import desafio_quality.services.DistrictService;
 import desafio_quality.services.PropertyService;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.*;
 
 
 @ExtendWith(SpringExtension.class)
@@ -118,8 +127,7 @@ public class PropertyServiceTest {
 
         District district = new District("Bom Retiro", new BigDecimal("2000"));
         Property property = new Property("Minha casa", district);
-        List<Room> rooms = List.of(
-                new Room("Quarto", 2.0, 2.0, property));
+        List<Room> rooms = List.of(new Room("Quarto", 2.0, 2.0, property));
         property.setRooms(rooms);
 
         when(propertyRepository.findById(any(Long.class))).thenReturn(Optional.of(property));
@@ -128,7 +136,6 @@ public class PropertyServiceTest {
         PropertyAreaDTO propertyAreaDTO = propertyService.getTotalArea(propertyId);
 
         // then - verificação
-
         PropertyAreaDTO expected = new PropertyAreaDTO(4.0);
         assertThat(propertyAreaDTO).usingRecursiveComparison().ignoringFields("id").isEqualTo(expected);
     }
@@ -150,20 +157,19 @@ public class PropertyServiceTest {
         PropertyDTO propertyDTO = propertyService.createProperty(createProperty);
 
         DistrictDTO districtDTO = new DistrictDTO(
-                district.getId(),
-                district.getName(),
-                district.getSquareMeterValue());
+            district.getId(),
+            district.getName(),
+            district.getSquareMeterValue());
 
         PropertyDTO expectedDTO = new PropertyDTO(
-                property.getId(),
-                property.getName(),
-                districtDTO,
-                new ArrayList<>()
-                );
+            property.getId(),
+            property.getName(),
+            districtDTO,
+            new ArrayList<>()
+            );
 
         assertThat(propertyDTO).usingRecursiveComparison().ignoringFields("id").isEqualTo(expectedDTO);
     }
-
 
     @Test
     @DisplayName("Should return a list of room dtos of a property.")
@@ -173,8 +179,8 @@ public class PropertyServiceTest {
         District district = new District("Bom Retiro", new BigDecimal("2000"));
         Property property = new Property("Minha casa", district);
         List<Room> rooms = List.of(
-                new Room("Quarto", 2.0, 3.0, property),
-                new Room("Sala", 5.0, 3.0, property));
+            new Room("Quarto", 2.0, 3.0, property),
+            new Room("Sala", 5.0, 3.0, property));
         property.setRooms(rooms);
 
         when(propertyRepository.findById(any(Long.class))).thenReturn(Optional.of(property));
@@ -182,8 +188,8 @@ public class PropertyServiceTest {
         List<RoomDTO> roomDTOList = propertyService.getPropertyRooms(propertyId);
 
         List<RoomDTO> expected = List.of(
-                new RoomDTO(1L, "Quarto", 2.0,3.0),
-                new RoomDTO(2L, "Sala", 5.0,3.0)
+            new RoomDTO(1L, "Quarto", 2.0,3.0),
+            new RoomDTO(2L, "Sala", 5.0,3.0)
         );
 
         assertThat(roomDTOList).usingRecursiveComparison().ignoringFields("id","room.id").isEqualTo(expected);
@@ -224,7 +230,7 @@ public class PropertyServiceTest {
         doNothing().when(propertyRepository).deleteById(any(Long.class));
 
         assertThrows(ResourceNotFoundException.class,
-                () -> propertyService.deleteProperty(propertyId));
+            () -> propertyService.deleteProperty(propertyId));
     }
 
     @Test
@@ -258,7 +264,6 @@ public class PropertyServiceTest {
         District district = new District("Bom Retiro", new BigDecimal("2000"));
         Property property = new Property("Minha casa", district);
         Room room = new Room("Quarto", 2.0, 3.0, property);
-
 
         when(propertyRepository.findById(any(Long.class))).thenThrow(ResourceNotFoundException.class);
         when(propertyRepository.save(any(Property.class))).thenReturn(property);

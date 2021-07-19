@@ -1,12 +1,14 @@
-package desafio_quality.unit.services.controllers;
+package desafio_quality.unit.controllers;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.math.BigDecimal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import desafio_quality.controllers.DistrictController;
-import desafio_quality.dtos.CreateDistrictDTO;
-import desafio_quality.dtos.DistrictDTO;
-import desafio_quality.exceptions.ResourceNotFoundException;
-import desafio_quality.services.DistrictService;
-import org.hamcrest.Matchers;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,15 +22,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.math.BigDecimal;
-
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import desafio_quality.controllers.DistrictController;
+import desafio_quality.dtos.CreateDistrictDTO;
+import desafio_quality.dtos.DistrictDTO;
+import desafio_quality.exceptions.ResourceNotFoundException;
+import desafio_quality.services.DistrictService;
 
 @WebMvcTest(controllers = DistrictController.class)
 @AutoConfigureMockMvc
@@ -231,6 +229,4 @@ class DistrictControllerTest {
         mock.perform(request)
                 .andExpect(status().isUnprocessableEntity());
     }
-
-
 }

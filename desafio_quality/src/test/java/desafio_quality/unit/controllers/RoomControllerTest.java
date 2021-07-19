@@ -1,11 +1,16 @@
-package desafio_quality.unit.services.controllers;
+package desafio_quality.unit.controllers;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import desafio_quality.controllers.RoomController;
-import desafio_quality.dtos.RoomDTO;
-import desafio_quality.dtos.UpsertRoomDTO;
-import desafio_quality.exceptions.ResourceNotFoundException;
-import desafio_quality.services.RoomService;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,14 +28,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import desafio_quality.controllers.RoomController;
+import desafio_quality.dtos.RoomDTO;
+import desafio_quality.dtos.UpsertRoomDTO;
+import desafio_quality.exceptions.ResourceNotFoundException;
+import desafio_quality.services.RoomService;
 
 @WebMvcTest(controllers = RoomController.class)
 @AutoConfigureMockMvc

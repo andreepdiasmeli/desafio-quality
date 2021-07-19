@@ -1,17 +1,16 @@
 package desafio_quality.unit.services;
 
-import desafio_quality.dtos.CreateDistrictDTO;
-import desafio_quality.dtos.DistrictDTO;
-import desafio_quality.dtos.RoomDTO;
-import desafio_quality.dtos.UpsertRoomDTO;
-import desafio_quality.entities.District;
-import desafio_quality.entities.Room;
-import desafio_quality.dtos.DistrictDTO;
-import desafio_quality.entities.District;
-import desafio_quality.dtos.CreateDistrictDTO;
-import desafio_quality.exceptions.ResourceNotFoundException;
-import desafio_quality.repositories.DistrictRepository;
-import desafio_quality.services.DistrictService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,17 +19,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import desafio_quality.dtos.CreateDistrictDTO;
+import desafio_quality.dtos.DistrictDTO;
+import desafio_quality.entities.District;
+import desafio_quality.exceptions.ResourceNotFoundException;
+import desafio_quality.repositories.DistrictRepository;
+import desafio_quality.services.DistrictService;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -174,5 +168,4 @@ public class DistrictServiceTest {
 
         assertEquals("District " + districtId + " does not exist.", ex.getMessage());
     }
-
 }

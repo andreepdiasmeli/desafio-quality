@@ -1,16 +1,17 @@
 package desafio_quality.unit.dtos;
 
-import desafio_quality.dtos.UpsertPropertyDTO;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import java.math.BigDecimal;
-import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+
+import desafio_quality.dtos.UpsertPropertyDTO;
 
 public class UpsertPropertyDTOTest {
 
@@ -50,6 +51,4 @@ public class UpsertPropertyDTOTest {
         Set<ConstraintViolation<UpsertPropertyDTO>> violations = validator.validate(dto);
         assertEquals("O id do district não pode estar vazio.", violations.iterator().next().getMessage());
     }
-
-
 }

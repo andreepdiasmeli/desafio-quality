@@ -1,7 +1,6 @@
 package desafio_quality.unit.dtos;
 
 import desafio_quality.dtos.CreateDistrictDTO;
-import desafio_quality.dtos.PropertyDTO;
 import org.junit.jupiter.api.Test;
 
 import javax.validation.ConstraintViolation;
@@ -58,7 +57,4 @@ public class CreateDistrictDTOTest {
         Set<ConstraintViolation<CreateDistrictDTO>> violations = validator.validate(dto);
         assertEquals("O valor de metros quadrados não deve exceder 13 digitos.", violations.iterator().next().getMessage());
     }
-
-
-
 }
