@@ -2,11 +2,8 @@ package desafio_quality.unit.services.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import desafio_quality.controllers.DistrictController;
-import desafio_quality.dtos.*;
-import desafio_quality.exceptions.ResourceNotFoundException;
 import desafio_quality.dtos.CreateDistrictDTO;
 import desafio_quality.dtos.DistrictDTO;
-
 import desafio_quality.exceptions.ResourceNotFoundException;
 import desafio_quality.services.DistrictService;
 import org.junit.jupiter.api.DisplayName;
@@ -23,18 +20,9 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-
 import static org.mockito.Mockito.*;
-
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -76,7 +64,7 @@ class DistrictControllerTest {
     @Test
     @DisplayName("Should not create a district with incorrect data.")
     void testPostAnInvalidDistrict() throws Exception {
-        CreateDistrictDTO district = new CreateDistrictDTO("", new BigDecimal("123456789123456789"));
+        CreateDistrictDTO district = new CreateDistrictDTO("small", new BigDecimal("123456789123456789"));
         String districtJSON = mapper.writeValueAsString(district);
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders

@@ -1,18 +1,16 @@
 package desafio_quality.dtos;
 
+import desafio_quality.dtos.validators.Named;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class UpsertRoomDTO {
-    
-    @NotBlank(message = "O campo não pode estar vazio.")
-    @Size(min = 1, message = "O nome do cômodo deve conter mais que um caracter.")
-    @Size(max = 30, message = "O nome do cômodo não pode exceder 30 caracteres.")
-    @Pattern(regexp = "^[A-Z].*$", message = "O nome do cômodo deve começar com uma letra maiúscula.")
+
+    @Named(className = "a sala")
+    @Size(max=30, message = "O comprimento do nome não pode exceder 30 caracteres.")
     private String name;
 
     @NotNull(message = "A largura do cômodo não pode estar vazia.")
