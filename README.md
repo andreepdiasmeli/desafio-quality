@@ -4,7 +4,7 @@ Neste repositório está a implementação do **Desafio Quality** realizado no b
 
 O sistema desenvolvido consiste em uma API REST de uma empresa imobiliária **Seu Imóvel**.
 
-## Features :fire:
+## Testes :fire:
 
 - Testes **unitários** de todos os *endpoints* dos *controllers*.
 - Testes **unitários** de todos os métodos dos *services*.
